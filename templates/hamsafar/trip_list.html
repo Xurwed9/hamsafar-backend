@@ -1,0 +1,22 @@
+ {% extends "accounts/base.html" %}
+
+{% block main %}
+
+<h2>Сафарҳои фаъол (Ҳамсафар ёбед)</h2>
+
+<div class="trips-container">
+    {% for trip in trips %}
+        <div class="trip-card">
+            <h3>{{ trip.from_city }} ➡️ {{ trip.to_city }}</h3>
+            <p><strong>Ронанда:</strong> {{ trip.driver.username }}</p>
+            <p><strong>Мошин:</strong> {{ trip.car.car_name }} ({{ trip.car.car_number }})</p>
+            <p><strong>Вақти ҳаракат:</strong> {{ trip.departure_time|date:"d.m.Y H:i" }}</p>
+            <p><strong>Ҷойҳои холӣ:</strong> {{ trip.free_seats }} ҷой</p>
+            <p><strong>Нарх:</strong> {{ trip.price }} сомонӣ</p>
+            <a href="#">Банд кардан (Book)</a>
+        </div>
+    {% empty %}
+        <p>Ҳозир ҳеҷ сафаре ёфт нашуд. Шумо метавонед худатон эълон гузоред!</p>
+    {% endfor %}
+</div>
+{% endblock  %}
