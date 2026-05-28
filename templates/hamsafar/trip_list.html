@@ -1,24 +1,32 @@
- {% extends "accounts/base.html" %}
+{% extends "accounts/base.html" %}
 
 {% block main %}
-
 <h2>Сафарҳои фаъол (Ҳамсафар ёбед)</h2>
 
-<div class="trips-container">
+<div class="trips-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
     {% for trip in trips %}
-        <div class="trip-card">
+        <div class="trip-card" style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #fff;">
             <h3>{{ trip.from_city }} ➡️ {{ trip.to_city }}</h3>
             <p><strong>Ронанда:</strong> {{ trip.driver.username }}</p>
             <p><strong>Мошин:</strong> {{ trip.car.car_name }} ({{ trip.car.car_number }})</p>
             <p><strong>Вақти ҳаракат:</strong> {{ trip.departure_time|date:"d.m.Y H:i" }}</p>
             <p><strong>Ҷойҳои холӣ:</strong> {{ trip.free_seats }} ҷой</p>
             <p><strong>Нарх:</strong> {{ trip.price }} сомонӣ</p>
-            <a href="#">Банд кардан (Book)</a>
-            <a href="{% url 'update_trip' trip.pk %}">update trip</a>
-            <a href="{% url 'delete_trip' trip.pk %}">delete trip</a>
+            
+            {% if request.user.is_authenticated %}
+                {% if not request.user.is_driver %}
+                    {% if trip.free_seats > 0 %}
+                        <a href="{% url 'book_trip' trip.id %}" style="display: inline-block; background: green; color: white; padding: 10px 15px; text-decoration: none; font-weight: bold; border-radius: 5px;">Book Now</a>
+                    {% else %}
+                        <span style="color: red; font-weight: bold;">No seats available</span>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                <p><a href="{% url 'login' %}">Login to book this trip</a></p>
+            {% endif %}
         </div>
     {% empty %}
         <p>Ҳозир ҳеҷ сафаре ёфт нашуд. Шумо метавонед худатон эълон гузоред!</p>
     {% endfor %}
 </div>
-{% endblock  %}
+{% endblock %}

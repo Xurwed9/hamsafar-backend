@@ -12,13 +12,15 @@
 
             {% if request.user.is_authenticated %}                
                 {% if request.user.is_driver %}
-                    <span style="color: green; font-size: 14px; font-weight: bold;">Driver</span>
+                    <span style="color: green; font-weight: bold;">Driver ({{ request.user.username }})</span>
                     <a href="{% url 'create_trip' %}" style="color: green; font-weight: bold;">+ Create a Trip</a>
+                    <a href="{% url 'my_trips' %}">Manage Bookings</a>
                 {% else %}
-                    <span style="color: gray; font-size: 14px;">Passenger</span>
+                    <span style="color: gray; font-weight: bold;">Passenger ({{ request.user.username }})</span>
+                    <a href="{% url 'passenger_bookings' %}" style="color: blue; font-weight: bold;">My Booked Trips</a>
                 {% endif %}
-                <a href="{% url 'logout' %}" style="color: red;">Logout</a>
-
+                
+                <a href="{% url 'logout' %}" style="color: red; margin-left: 20px;">Logout</a>
             {% else %}
                 <a href="{% url 'login' %}">Login</a>
                 <a href="{% url 'register' %}">Register</a>

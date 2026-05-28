@@ -1,0 +1,49 @@
+{% extends "accounts/base.html" %}
+{% block main %}
+
+<h2>My Booked Trips</h2>
+
+{% if not bookings %}
+    <p>You haven't booked any trips yet. <a href="{% url 'trip_list' %}">Find a Trip</a></p>
+{% else %}
+
+    <table border="1" cellpadding="10" style="width: 100%; border-collapse: collapse; text-align: left;">
+        <tr style="background: #f4f4f4;">
+            <th>Route</th>
+            <th>Driver</th>
+            <th>Driver's Phone</th>
+            <th>Car</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        {% for booking in bookings %}
+        <tr>
+            <td><strong>From:</strong> {{ booking.trip.from_city }} <br> <strong>To:</strong> {{ booking.trip.to_city }}</td>
+            <td>{{ booking.trip.driver.username }}</td>
+            <td>
+                {% if booking.status == 'Accepted' %}
+                    {{ booking.trip.driver.phone }}
+                {% else %}
+                    <span style="color: gray;">Hidden until accepted</span>
+                {% endif %}
+            </td>
+            <td>{{ booking.trip.car.car_name }} ({{ booking.trip.car.car_number }})</td>
+            <td>
+                <strong style="{% if booking.status == 'Accepted' %}color: green;{% elif booking.status == 'Cancelled' %}color: red;{% else %}color: orange;{% endif %}">
+                    {{ booking.status }}
+                </strong>
+            </td>
+            <td>
+                {% if booking.status == 'Pending' or booking.status == 'Accepted' %}
+                    <a href="{% url 'cancel_booking_passenger' booking.id %}" style="color: red;" onclick="return confirm('Are you sure you want to cancel this booking?')">Cancel Request</a>
+                {% else %}
+                    <span style="color: gray;">No action</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endif %}
+
+{% endblock %}

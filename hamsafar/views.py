@@ -81,3 +81,44 @@ def delete_trip(request, pk):
         trip.delete()
         return redirect('trip_list')
     return render(request, 'hamsafar/delete_trip.html', {'trip': trip})
+
+@login_required
+def my_trips(request):
+    trips = Trip.objects.filter(driver=request.user)
+    return render(request, 'hamsafar/my_trips.html', {'trips': trips})
+
+@login_required
+def book_trip(request, trip_id):
+    if request.user.is_driver:
+        return render(request, 'hamsafar/error.html', {'error': 'Drivers cannot book trips.'})
+        
+    trip = get_object_or_404(Trip, id=trip_id)
+    
+    already_booked = Booking.objects.filter(passenger=request.user, trip=trip).exists()
+    
+    if not already_booked and trip.free_seats > 0:
+        Booking.objects.create(
+            passenger=request.user,
+            trip=trip,
+            seats=1
+        )
+    return redirect('passenger_bookings')
+
+@login_required
+def passenger_bookings(request):
+    if request.user.is_driver:
+        return render(request, 'hamsafar/error.html', {'error': 'Only passengers can view this page.'})
+        
+    bookings = Booking.objects.filter(passenger=request.user)
+    return render(request, 'hamsafar/passenger_bookings.html', {'bookings': bookings})
+
+@login_required
+def cancel_booking_passenger(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id, passenger=request.user)
+    
+    if booking.status == 'Accepted':
+        booking.trip.free_seats += booking.seats
+        booking.trip.save()
+        
+    booking.delete()
+    return redirect('passenger_bookings')
