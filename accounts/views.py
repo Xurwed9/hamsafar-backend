@@ -7,8 +7,6 @@ from django.core.mail import send_mail
 from django.conf import settings
 
 
-
-
 def send_confirmation_email(user):
     code = randint(100000, 999999)
     EmailConfirm.objects.update_or_create(user=user, defaults={'code': code})
@@ -23,8 +21,6 @@ def send_confirmation_email(user):
     except Exception as e:
          print(e, '========================================')
 
-
-
 def register(request):
     if request.method == "POST":
         username = request.POST.get('username', '').strip()
@@ -32,9 +28,9 @@ def register(request):
         password2 = request.POST.get('password2', '').strip()
         email = request.POST.get('email', '').strip()
         phone = request.POST.get('phone', '').strip()
-        age = request.POST.get('age', '').strip()
-
-        if not username or not email or not password1 or not age or not phone:
+        age = request.POST.get('age', '').strip()        
+        role = request.POST.get('role', '').strip()
+        if not all([username, email, password1, password2, phone, age, role]):
             return render(request, 'accounts/register.html', {'error': 'All fields are required'})
 
         if password1 != password2:
@@ -46,12 +42,19 @@ def register(request):
         if User.objects.filter(email=email).exists():
             return render(request, 'accounts/register.html', {'error': 'Email already exists'})
 
+        try:
+            validated_age = int(age)
+        except ValueError:
+            return render(request, 'accounts/register.html', {'error': 'Age must be a valid number'})
+        is_driver_value = (role == 'driver')
+
         user = User.objects.create_user(
             username=username, 
             email=email,
             password=password1, 
-            age=age, 
-            phone=phone
+            age=validated_age, 
+            phone=phone,
+            is_driver=is_driver_value  
         )
         user.is_active = False
         user.save()

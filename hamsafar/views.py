@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from .models import Car, Trip, Booking, Message
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -12,35 +13,42 @@ def trip_list(request):
 
     return render(request, 'hamsafar/trip_list.html', {'trips': active_trips})
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Car, Trip
 
+@login_required
 def create_trip(request):
-    if request.method == 'POST':
-        car_name = request.POST.get('car_name')
-        car_number = request.POST.get('car_number').strip().upper() # Рақамро калон ва бе пробел мекунем
-        seats = request.POST.get('seats')
-        from_city = request.POST.get('from_city')
-        to_city = request.POST.get('to_city')
-        departure_time = request.POST.get('departure_time')
-        price = request.POST.get('price')
-        free_seats = request.POST.get('free_seats')
-        car, created = Car.objects.get_or_create(
-            owner=request.user,
-            car_number=car_number,
-            defaults={
-                'car_name': car_name,
-                'seats': seats
-            }
-        )
-        Trip.objects.create(
-            driver=request.user,
-            car=car, 
-            from_city=from_city,
-            to_city=to_city,
-            departure_time=departure_time,
-            price=price,
-            free_seats=free_seats
-        )
-        
-        return redirect('trip_list')
+    if not request.user.is_driver:
+        return render(request, 'hamsafar/error.html', {'error': 'Only drivers can access this page.'})
 
-    return render(request, 'hamsafar/create_trip.html')
+    user_cars = Car.objects.filter(owner=request.user)
+
+    if request.method == "POST":
+        if 'add_car' in request.POST:
+            car_name = request.POST.get('car_name')
+            car_number = request.POST.get('car_number')
+            seats = request.POST.get('seats')
+            Car.objects.create(
+                owner=request.user,
+                car_name=car_name,
+                car_number=car_number,
+                seats=seats
+            )
+            return redirect('create_trip')
+
+        elif 'create_trip' in request.POST:
+            car_id = request.POST.get('car_id')
+            car = Car.objects.get(id=car_id, owner=request.user)
+            Trip.objects.create(
+                driver=request.user,
+                car=car,
+                from_city=request.POST.get('from_city'),
+                to_city=request.POST.get('to_city'),
+                departure_time=request.POST.get('departure_time'),
+                price=request.POST.get('price'),
+                free_seats=request.POST.get('free_seats')
+            )
+            return redirect('trip_list')
+
+    return render(request, 'hamsafar/create_trip.html', {'user_cars': user_cars})

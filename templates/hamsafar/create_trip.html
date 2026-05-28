@@ -1,58 +1,52 @@
- {% extends "accounts/base.html" %}
-
+{% extends "accounts/base.html" %}
 {% block main %}
-<h2>Сафари нав созед (Бо иловаи мошин)</h2>
 
-<form method="POST">
-    {% csrf_token %}
+{% if not user_cars %}
+    <h3>Step 1: Add your car first</h3>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="add_car" value="1">
+        <label>Car Name:</label><br>
+        <input type="text" name="car_name" placeholder="Toyota Camry" required><br><br>
+        
+        <label>Car Number:</label><br>
+        <input type="text" name="car_number" placeholder="0001TJ01" required><br><br>
+        
+        <label>Total Seats:</label><br>
+        <input type="number" name="seats" required><br><br>
+        
+        <button type="submit">Save Car & Continue</button>
+    </form>
+{% else %}
+    <h3>Step 2: Create a Trip</h3>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="create_trip" value="1">
+        
+        <label>Select Car:</label><br>
+        <select name="car_id" required style="width: 100%; padding: 8px;">
+            {% for car in user_cars %}
+                <option value="{{ car.id }}">{{ car.car_name }} ({{ car.car_number }})</option>
+            {% endfor %}
+        </select><br><br>
 
-    <h3>🚗 Маълумоти мошин:</h3>
-    <p>
-        <label>Номи мошин:</label><br>
-        <input type="text" name="car_name" placeholder="Масалан: Opel Astra" required>
-    </p>
+        <label>From:</label><br>
+        <input type="text" name="from_city" required><br><br>
 
-    <p>
-        <label>Рақами давлатии мошин:</label><br>
-        <input type="text" name="car_number" placeholder="Масалан: 7777TJ01" required>
-    </p>
+        <label>To:</label><br>
+        <input type="text" name="to_city" required><br><br>
 
-    <p>
-        <label>Шумораи умумии ҷойҳо дар мошин:</label><br>
-        <input type="number" name="seats" placeholder="Масалан: 4" required>
-    </p>
+        <label>Departure Time:</label><br>
+        <input type="datetime-local" name="departure_time" required><br><br>
 
-    <hr> <h3>🗺️ Маълумоти сафар:</h3>
-    <p>
-        <label>Аз кадом шаҳр:</label><br>
-        <input type="text" name="from_city" placeholder="Масалан: Душанбе" required>
-    </p>
+        <label>Price:</label><br>
+        <input type="number" name="price" required><br><br>
 
-    <p>
-        <label>Ба кадом шаҳр:</label><br>
-        <input type="text" name="to_city" placeholder="Масалан: Хуҷанд" required>
-    </p>
+        <label>Free Seats:</label><br>
+        <input type="number" name="free_seats" required><br><br>
 
-    <p>
-        <label>Вақти ҳаракат:</label><br>
-        <input type="datetime-local" name="departure_time" required>
-    </p>
+        <button type="submit">Create Trip</button>
+    </form>
+{% endif %}
 
-    <p>
-        <label>Нархи як ҷой (сомонӣ):</label><br>
-        <input type="number" step="0.01" name="price" placeholder="Масалан: 120" required>
-    </p>
-
-    <p>
-        <label>Ҷойҳои холӣ барои мусофирон:</label><br>
-        <input type="number" name="free_seats" placeholder="Масалан: 3" required>
-    </p>
-
-    <button type="submit" style="padding: 10px 20px; background-color: green; color: white; border: none; cursor: pointer;">
-        Сафарро эълон кун
-    </button>
-</form>
-
-<br>
-<a href="{% url 'trip_list' %}">Бозгашт ба саҳифаи асосӣ</a>
-{% endblock  %}
+{% endblock %}
