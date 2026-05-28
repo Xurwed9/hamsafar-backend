@@ -72,3 +72,12 @@ def update_trip(request, pk):
         return redirect('trip_list')
 
     return render(request, 'hamsafar/update_trip.html', {'trip': trip, 'user_cars': user_cars})
+
+
+@login_required
+def delete_trip(request, pk):
+    trip = get_object_or_404(Trip, pk=pk, driver=request.user)
+    if request.method == "POST":
+        trip.delete()
+        return redirect('trip_list')
+    return render(request, 'hamsafar/delete_trip.html', {'trip': trip})
