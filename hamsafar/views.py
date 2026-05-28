@@ -52,3 +52,23 @@ def create_trip(request):
             return redirect('trip_list')
 
     return render(request, 'hamsafar/create_trip.html', {'user_cars': user_cars})
+
+
+
+@login_required
+def update_trip(request, pk):
+    trip = get_object_or_404(Trip, pk=pk, driver=request.user)
+    user_cars = Car.objects.filter(owner=request.user)
+
+    if request.method == "POST":
+        car_id = request.POST.get('car_id')
+        trip.car = Car.objects.get(id=car_id, owner=request.user)
+        trip.from_city = request.POST.get('from_city')
+        trip.to_city = request.POST.get('to_city')
+        trip.departure_time = request.POST.get('departure_time')
+        trip.price = request.POST.get('price')
+        trip.free_seats = request.POST.get('free_seats')
+        trip.save()
+        return redirect('trip_list')
+
+    return render(request, 'hamsafar/update_trip.html', {'trip': trip, 'user_cars': user_cars})

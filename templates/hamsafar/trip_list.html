@@ -14,6 +14,7 @@
             <p><strong>Ҷойҳои холӣ:</strong> {{ trip.free_seats }} ҷой</p>
             <p><strong>Нарх:</strong> {{ trip.price }} сомонӣ</p>
             <a href="#">Банд кардан (Book)</a>
+            <a href="{% url 'update_trip' trip.pk %}">update trip</a>
         </div>
     {% empty %}
         <p>Ҳозир ҳеҷ сафаре ёфт нашуд. Шумо метавонед худатон эълон гузоред!</p>
