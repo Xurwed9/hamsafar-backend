@@ -520,3 +520,118 @@ body {
     padding: 30px;
     color: #777;
 }
+
+
+
+/* ===== CONTAINER ===== */
+.manage-container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 10px;
+}
+
+/* TITLE */
+.page-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* TRIP CARD */
+.trip-card {
+    background: white;
+    border-radius: 14px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.trip-title {
+    margin-bottom: 5px;
+}
+
+.trip-info {
+    color: #555;
+}
+
+/* BOOKING CARD */
+.booking-card {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 10px;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.booking-card:hover {
+    transform: translateY(-2px);
+}
+
+/* USER */
+.booking-user {
+    font-size: 14px;
+}
+
+/* STATUS */
+.status {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-accepted {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* ACTIONS */
+.actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+/* BUTTONS */
+.btn {
+    padding: 6px 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+    font-size: 13px;
+}
+
+.btn.accept {
+    background: #28a745;
+    color: white;
+}
+
+.btn.accept:hover {
+    background: #1e7e34;
+}
+
+.btn.cancel {
+    background: #dc3545;
+    color: white;
+}
+
+.btn.cancel:hover {
+    background: #b52a37;
+}
+
+/* EMPTY */
+.empty-text {
+    color: #888;
+    font-size: 13px;
+}
