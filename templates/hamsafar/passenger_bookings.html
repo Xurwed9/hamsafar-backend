@@ -1,30 +1,30 @@
 {% extends "accounts/base.html" %}
 {% block main %}
 
-<h2>Мусофир: Сафарҳои бандкардаи ман</h2>
+<h2>My Booked Trips</h2>
 
 {% if not bookings %}
-    <p>Шумо ҳоло ҳеҷ сафареро банд накардаед. <a href="{% url 'trip_list' %}">Ҷустуҷӯи сафар</a></p>
+    <p>You haven't booked any trips yet. <a href="{% url 'trip_list' %}">Find a Trip</a></p>
 {% else %}
 
-    <table border="1" cellpadding="10" style="width: 100%; border-collapse: collapse; text-align: left; margin-top: 20px;">
+    <table border="1" cellpadding="10" style="width: 100%; border-collapse: collapse; text-align: left;">
         <tr style="background: #f4f4f4;">
-            <th>Маршрут</th>
-            <th>Ронанда</th>
-            <th>Телефони ронанда</th>
-            <th>Мошин</th>
-            <th>Статус</th>
-            <th>Амал</th>
+            <th>Route</th>
+            <th>Driver</th>
+            <th>Driver's Phone</th>
+            <th>Car</th>
+            <th>Status</th>
+            <th>Action</th>
         </tr>
         {% for booking in bookings %}
         <tr>
-            <td><strong>Аз:</strong> {{ booking.trip.from_city }} <br> <strong>Ба:</strong> {{ booking.trip.to_city }}</td>
+            <td><strong>From:</strong> {{ booking.trip.from_city }} <br> <strong>To:</strong> {{ booking.trip.to_city }}</td>
             <td>{{ booking.trip.driver.username }}</td>
             <td>
                 {% if booking.status == 'Accepted' %}
                     {{ booking.trip.driver.phone }}
                 {% else %}
-                    <span style="color: gray;">Танҳо пас аз қабул</span>
+                    <span style="color: gray;">Hidden until accepted</span>
                 {% endif %}
             </td>
             <td>{{ booking.trip.car.car_name }} ({{ booking.trip.car.car_number }})</td>
@@ -35,9 +35,9 @@
             </td>
             <td>
                 {% if booking.status == 'Pending' or booking.status == 'Accepted' %}
-                    <a href="{% url 'cancel_booking_passenger' booking.id %}" style="color: red;" onclick="return confirm('Шумо дилпуред, ки мехоҳед фармоишро бекор кунед?')">Бекор кардан</a>
+                    <a href="{% url 'cancel_booking_passenger' booking.id %}" style="color: red;" onclick="return confirm('Are you sure you want to cancel this booking?')">Cancel Request</a>
                 {% else %}
-                    <span style="color: gray;">Амал нест</span>
+                    <span style="color: gray;">No action</span>
                 {% endif %}
             </td>
         </tr>

@@ -15,9 +15,16 @@
                     <span style="color: green; font-weight: bold;">Driver ({{ request.user.username }})</span>
                     <a href="{% url 'create_trip' %}" style="color: green; font-weight: bold;">+ Create a Trip</a>
                     <a href="{% url 'my_trips' %}">Manage Bookings</a>
+
+                    <a href="{% url 'inbox' %}">
+                    Inbox
+                    </a>
                 {% else %}
                     <span style="color: gray; font-weight: bold;">Passenger ({{ request.user.username }})</span>
                     <a href="{% url 'passenger_bookings' %}" style="color: blue; font-weight: bold;">My Booked Trips</a>
+                    <a href="{% url 'inbox' %}">
+                    Inbox
+                    </a>
                 {% endif %}
                 
                 <a href="{% url 'logout' %}" style="color: red; margin-left: 20px;">Logout</a>

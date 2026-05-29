@@ -10,4 +10,7 @@ urlpatterns = [
     path('my-bookings/', views.passenger_bookings, name='passenger_bookings'),
     path('booking/<int:booking_id>/cancel-my/', views.cancel_booking_passenger, name='cancel_booking_passenger'),
     path('my-trips/', views.my_trips, name='my_trips'),
+    path('booking/<int:booking_id>/<str:action>/', views.manage_booking, name='manage_booking'),
+    path('messages/', views.inbox, name='inbox'),
+    path('send-message/<int:user_id>/', views.send_message, name='send_message'),
 ]

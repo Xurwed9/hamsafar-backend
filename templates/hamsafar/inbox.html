@@ -1,0 +1,52 @@
+{% extends "accounts/base.html" %}
+
+{% block main %}
+
+<h2>Inbox</h2>
+
+{% for msg in messages %}
+
+<div style="
+    border:1px solid #ccc;
+    padding:15px;
+    margin-bottom:10px;
+    border-radius:10px;
+">
+
+    <p>
+        <strong>From:</strong>
+        {{ msg.sender.username }}
+    </p>
+
+    <p>
+        {{ msg.text }}
+    </p>
+
+    <small>
+        {{ msg.created_at }}
+    </small>
+
+    <br><br>
+
+    <a href="{% url 'send_message' msg.sender.id %}"
+       style="
+       background:#007bff;
+       color:white;
+       padding:8px 12px;
+       text-decoration:none;
+       border-radius:5px;
+       ">
+
+       Reply
+
+    </a>
+
+</div>
+
+{% empty %}
+
+<p>No messages yet.</p>
+
+{% endfor %}
+
+{% endblock %}
