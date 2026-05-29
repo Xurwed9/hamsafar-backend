@@ -1,10 +1,22 @@
 {% extends "accounts/base.html" %}
 {% block main %}
 
-<div style="text-align: center; margin-top: 50px;">
-    <h2 style="color: red;">Error!</h2>
-    <p>{{ error }}</p>
-    <a href="/">Go to Homepage</a>
+<div class="error-container">
+
+    <div class="error-card">
+
+        <h2 class="error-title">Error!</h2>
+
+        <p class="error-text">
+            {{ error }}
+        </p>
+
+        <a href="{% url 'trip_list' %}" class="btn home-btn">
+            Go to Homepage
+        </a>
+
+    </div>
+
 </div>
 
 {% endblock %}
