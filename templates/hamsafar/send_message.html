@@ -2,27 +2,34 @@
 
 {% block main %}
 
-<h2>
-    Message to {{ receiver.username }}
-</h2>
+<div class="message-container">
 
-<form method="POST">
+    <div class="message-card">
 
-    {% csrf_token %}
+        <h2 class="message-title">
+            Message to {{ receiver.username }}
+        </h2>
 
-    <textarea
-        name="text"
-        rows="5"
-        style="width:100%;"
-        required>
-    </textarea>
+        <form method="POST" class="message-form">
 
-    <br><br>
+            {% csrf_token %}
 
-    <button type="submit">
-        Send Message
-    </button>
+            <textarea
+                name="text"
+                class="message-input"
+                rows="5"
+                placeholder="Write your message..."
+                required
+            ></textarea>
 
-</form>
+            <button type="submit" class="btn send-btn">
+                Send Message
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
 
 {% endblock %}
