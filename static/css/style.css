@@ -292,3 +292,86 @@ body {
         transform: translateY(0);
     }
 }
+
+/* ===== DELETE PAGE ===== */
+.delete-container {
+    max-width: 500px;
+    margin: 60px auto;
+    padding: 20px;
+}
+
+.delete-card {
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    text-align: center;
+    animation: fadeUp 0.4s ease;
+}
+
+.delete-title {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #d9534f;
+}
+
+.delete-text {
+    font-size: 15px;
+    margin-bottom: 20px;
+    color: #444;
+}
+
+/* FORM */
+.delete-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* BUTTONS */
+.btn {
+    padding: 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.btn.danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn.danger:hover {
+    background: #b52a37;
+    transform: translateY(-2px);
+}
+
+.btn.cancel {
+    background: #6c757d;
+    color: white;
+}
+
+.btn.cancel:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+.full {
+    width: 100%;
+}
+
+/* ANIMATION */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

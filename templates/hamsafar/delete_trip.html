@@ -1,13 +1,33 @@
 {% extends "accounts/base.html" %}
 {% block main %}
 
-<h3>Delete Trip</h3>
-<p>Are you sure you want to delete the trip from <strong>{{ trip.from_city }}</strong> to <strong>{{ trip.to_city }}</strong>?</p>
+<div class="delete-container">
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit" style="background-color: red; color: white; padding: 10px;">Yes, Delete</button>
-    <a href="{% url 'trip_list' %}" style="margin-left: 15px;">Cancel</a>
-</form>
+    <div class="delete-card">
+
+        <h3 class="delete-title">Delete Trip</h3>
+
+        <p class="delete-text">
+            Are you sure you want to delete the trip from
+            <strong>{{ trip.from_city }}</strong>
+            to
+            <strong>{{ trip.to_city }}</strong>?
+        </p>
+
+        <form method="post" class="delete-form">
+            {% csrf_token %}
+
+            <button type="submit" class="btn danger full">
+                Yes, Delete
+            </button>
+
+            <a href="{% url 'trip_list' %}" class="btn cancel full">
+                Cancel
+            </a>
+        </form>
+
+    </div>
+
+</div>
 
 {% endblock %}
