@@ -635,3 +635,125 @@ body {
     color: #888;
     font-size: 13px;
 }
+
+
+
+
+/* ===== CONTAINER ===== */
+.bookings-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 10px;
+}
+
+/* TITLE */
+.page-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* EMPTY */
+.empty-state {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+}
+
+.link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+/* TABLE WRAPPER */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+/* TABLE */
+.bookings-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+/* HEADER */
+.bookings-table thead {
+    background: #f4f6fb;
+}
+
+.bookings-table th,
+.bookings-table td {
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+}
+
+/* ROW */
+.bookings-table tr {
+    border-bottom: 1px solid #eee;
+}
+
+.bookings-table tr:hover {
+    background: #f9f9f9;
+}
+
+/* STATUS */
+.status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-accepted {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* BUTTON */
+.btn {
+    padding: 6px 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.btn.danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn.danger:hover {
+    background: #b52a37;
+}
+
+/* MUTED TEXT */
+.muted {
+    color: #999;
+    font-size: 12px;
+}
+
+.hidden-text {
+    color: #999;
+    font-size: 12px;
+}
