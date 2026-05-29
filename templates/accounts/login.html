@@ -1,23 +1,55 @@
- {% extends "accounts/base.html" %}
+{% extends "accounts/base.html" %}
 
 {% block main %}
 
- <h3> Login </h3>
-    <form action="" method="post">
+<div class="auth-container">
+
+    <h3 class="auth-title">Login</h3>
+
+    <form action="" method="post" class="auth-form">
         {% csrf_token %}
-        <label for="username">Username</label> <br>
-        <input type="text" placeholder="enter ur username" name="username" required> <br> <br>
-        <label for="password">password</label> <br>
-        <input type="password" placeholder="enter ur password" name="password" required> <br> <br>
-      
-        <button type="submit"> Login</button>
+
+        <label class="auth-label">Username</label>
+        <input
+            type="text"
+            name="username"
+            placeholder="Enter your username"
+            class="auth-input"
+            required
+        >
+
+        <label class="auth-label">Password</label>
+        <input
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            class="auth-input"
+            required
+        >
+
+        <button type="submit" class="auth-button">
+            Login
+        </button>
+
         {% if error %}
-            <p style="color: red;">{{error}}</p>
+            <p class="auth-error">{{ error }}</p>
         {% endif %}
     </form>
-    <div>
-        <p><strong>Dont an account so </strong> <a href="{% url  'register'  %}">Sign Up</a></p>
-        <p><strong>YOu can confirm ur email here </strong> <a href="{% url  'confirm'  %}">Confirm</a></p>
+
+    <div class="auth-footer">
+
+        <p>
+            Don’t have an account?
+            <a href="{% url 'register' %}" class="auth-link">Sign Up</a>
+        </p>
+
+        <p>
+            Confirm your email
+            <a href="{% url 'confirm' %}" class="auth-link">here</a>
+        </p>
 
     </div>
-{% endblock  %}
+
+</div>
+
+{% endblock %}
