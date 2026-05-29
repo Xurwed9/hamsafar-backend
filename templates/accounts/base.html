@@ -4,45 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hamsafar</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
-    <header>
-        <nav style="display: flex; gap: 15px; align-items: center; padding: 10px; background: #f4f4f4;">
-            <a href="{% url 'trip_list' %}">Trips (Home)</a>
 
-            {% if request.user.is_authenticated %}                
-                {% if request.user.is_driver %}
-                    <span style="color: green; font-weight: bold;">Driver ({{ request.user.username }})</span>
-                    <a href="{% url 'create_trip' %}" style="color: green; font-weight: bold;">+ Create a Trip</a>
-                    <a href="{% url 'my_trips' %}">Manage Bookings</a>
+<header class="header">
+    <nav class="navbar">
 
-                    <a href="{% url 'inbox' %}">
+        <a href="{% url 'trip_list' %}" class="nav-link">Trips (Home)</a>
+
+        {% if request.user.is_authenticated %}
+
+            {% if request.user.is_driver %}
+
+                <span class="badge driver-badge">
+                    Driver ({{ request.user.username }})
+                </span>
+
+                <a href="{% url 'create_trip' %}" class="nav-link highlight">
+                    + Create a Trip
+                </a>
+
+                <a href="{% url 'my_trips' %}" class="nav-link">
+                    Manage Bookings
+                </a>
+
+                <a href="{% url 'inbox' %}" class="nav-link">
                     Inbox
-                    </a>
-                {% else %}
-                    <span style="color: gray; font-weight: bold;">Passenger ({{ request.user.username }})</span>
-                    <a href="{% url 'passenger_bookings' %}" style="color: blue; font-weight: bold;">My Booked Trips</a>
-                    <a href="{% url 'inbox' %}">
-                    Inbox
-                    </a>
-                {% endif %}
-                
-                <a href="{% url 'logout' %}" style="color: red; margin-left: 20px;">Logout</a>
+                </a>
+
             {% else %}
-                <a href="{% url 'login' %}">Login</a>
-                <a href="{% url 'register' %}">Register</a>
+
+                <span class="badge passenger-badge">
+                    Passenger ({{ request.user.username }})
+                </span>
+
+                <a href="{% url 'passenger_bookings' %}" class="nav-link">
+                    My Booked Trips
+                </a>
+
+                <a href="{% url 'inbox' %}" class="nav-link">
+                    Inbox
+                </a>
+
             {% endif %}
-        </nav>
-    </header>
 
-    <main style="padding: 20px;">
-        {% block main %}
-            <h2>Main Content</h2>
-        {% endblock %}
-    </main>
+            <a href="{% url 'logout' %}" class="nav-link danger">
+                Logout
+            </a>
 
-    <footer style="margin-top: 50px; padding: 20px; background: #333; color: white; text-align: center;">
-        <p>&copy; 2026 Hamsafar Project</p>
-    </footer>
+        {% else %}
+
+            <a href="{% url 'login' %}" class="nav-link">Login</a>
+            <a href="{% url 'register' %}" class="nav-link">Register</a>
+
+        {% endif %}
+
+    </nav>
+</header>
+
+<main class="main-content">
+    {% block main %}
+        <h2>Main Content</h2>
+    {% endblock %}
+</main>
+
+<footer class="footer">
+    <p>&copy; 2026 Hamsafar Project</p>
+</footer>
+
 </body>
 </html>

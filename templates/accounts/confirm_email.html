@@ -1,21 +1,49 @@
- {% extends "accounts/base.html" %}
+{% extends "accounts/base.html" %}
 
 {% block main %}
 
- <h3> Confirm Email </h3>
-    <form action=" {% url 'confirm' %}" method="post">
+<div class="auth-container">
+
+    <h3 class="auth-title">Confirm Email</h3>
+
+    <form action="{% url 'confirm' %}" method="post" class="auth-form">
         {% csrf_token %}
-        <label for="username">Username</label> <br>
-        <input value={{ username }} type="text" placeholder="enter ur username" name="username" required> <br> <br>
-        
-        <label for="code">Code</label> <br>
-        <input type="text" placeholder="Enter 6-digit code " name="code" required> <br> <br>
-        <button type="submit"> Confimr</button>
+
+        <label class="auth-label">Username</label>
+        <input
+            value="{{ username }}"
+            type="text"
+            name="username"
+            placeholder="Enter your username"
+            class="auth-input"
+            required
+        >
+
+        <label class="auth-label">Code</label>
+        <input
+            type="text"
+            name="code"
+            placeholder="Enter 6-digit code"
+            class="auth-input"
+            required
+        >
+
+        <button type="submit" class="auth-button">
+            Confirm
+        </button>
+
         {% if error %}
-            <p style="color: red;">{{error}}</p>
+            <p class="auth-error">{{ error }}</p>
         {% endif %}
     </form>
-    <div>
-        <p><strong>Do u already have an account so </strong> <a href="{% url  'login'  %}">Sign in</a></p>
+
+    <div class="auth-footer">
+        <p>
+            Already have an account?
+            <a href="{% url 'login' %}" class="auth-link">Sign in</a>
+        </p>
     </div>
-{% endblock  %}
+
+</div>
+
+{% endblock %}
