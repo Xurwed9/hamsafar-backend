@@ -1,35 +1,91 @@
 {% extends "accounts/base.html" %}
 
 {% block main %}
-<h2>Сафарҳои фаъол (Ҳамсафар ёбед)</h2>
 
-<div class="trips-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
-    {% for trip in trips %}
-        <div class="trip-card" style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #fff;">
-            <h3>{{ trip.from_city }} ➡️ {{ trip.to_city }}</h3>
-            <p><strong>Ронанда:</strong> {{ trip.driver.username }}</p>
-            <p><strong>Мошин:</strong> {{ trip.car.car_name }} ({{ trip.car.car_number }})</p>
-            <p><strong>Вақти ҳаракат:</strong> {{ trip.departure_time|date:"d.m.Y H:i" }}</p>
-            <p><strong>Ҷойҳои холӣ:</strong> {{ trip.free_seats }} ҷой</p>
-            <p><strong>Нарх:</strong> {{ trip.price }} сомонӣ</p>
-            
-            {% if request.user.is_authenticated %}
-            <a href="{% url 'send_message' trip.driver.id %}">
-        Message Driver
-    </a>
-                {% if not request.user.is_driver %}
-                    {% if trip.free_seats > 0 %}
-                        <a href="{% url 'book_trip' trip.id %}" style="display: inline-block; background: green; color: white; padding: 10px 15px; text-decoration: none; font-weight: bold; border-radius: 5px;">Book Now</a>
-                    {% else %}
-                        <span style="color: red; font-weight: bold;">No seats available</span>
-                    {% endif %}
+<div class="trips-page">
+
+    <h2 class="page-title">Сафарҳои фаъол (Ҳамсафар ёбед)</h2>
+
+    <div class="trips-grid">
+
+        {% for trip in trips %}
+
+            <div class="trip-card">
+
+                <h3 class="trip-route">
+                    {{ trip.from_city }} ➜ {{ trip.to_city }}
+                </h3>
+
+                <div class="trip-info">
+                    <p><strong>Driver:</strong> {{ trip.driver.username }}</p>
+
+                    <p><strong>Car:</strong>
+                        {{ trip.car.car_name }} ({{ trip.car.car_number }})
+                    </p>
+
+                    <p><strong>Time:</strong>
+                        {{ trip.departure_time|date:"d.m.Y H:i" }}
+                    </p>
+
+                    <p><strong>Seats:</strong>
+                        {{ trip.free_seats }} available
+                    </p>
+
+                    <p><strong>Price:</strong>
+                        {{ trip.price }} somoni
+                    </p>
+                </div>
+
+                {% if request.user.is_authenticated %}
+
+                    <div class="trip-actions">
+
+                        <a href="{% url 'send_message' trip.driver.id %}"
+                           class="btn message-btn">
+                            Message Driver
+                        </a>
+
+                        {% if not request.user.is_driver %}
+
+                            {% if trip.free_seats > 0 %}
+
+                                <a href="{% url 'book_trip' trip.id %}"
+                                   class="btn book-btn">
+                                    Book Now
+                                </a>
+
+                            {% else %}
+
+                                <span class="no-seats">
+                                    No seats available
+                                </span>
+
+                            {% endif %}
+
+                        {% endif %}
+
+                    </div>
+
+                {% else %}
+
+                    <a href="{% url 'login' %}" class="login-link">
+                        Login to book this trip
+                    </a>
+
                 {% endif %}
-            {% else %}
-                <p><a href="{% url 'login' %}">Login to book this trip</a></p>
-            {% endif %}
-        </div>
-    {% empty %}
-        <p>Ҳозир ҳеҷ сафаре ёфт нашуд. Шумо метавонед худатон эълон гузоред!</p>
-    {% endfor %}
+
+            </div>
+
+        {% empty %}
+
+            <div class="empty-state">
+                <p>No trips found. Create your first trip!</p>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
 </div>
+
 {% endblock %}
