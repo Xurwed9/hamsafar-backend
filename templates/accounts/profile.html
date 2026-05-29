@@ -1,0 +1,24 @@
+{% extends "accounts/base.html" %}
+
+{% block main %}
+<h2>My Profile</h2>
+
+<p><b>Username:</b> {{ request.user.username }}</p>
+<p><b>Email:</b> {{ request.user.email }}</p>
+<p><b>Phone:</b> {{ request.user.phone }}</p>
+<p><b>Age:</b> {{ request.user.age }}</p>
+
+<p>
+<b>Role:</b>
+{% if request.user.is_driver %}
+    Driver 🚗
+{% else %}
+    Passenger 🧍
+{% endif %}
+</p>
+
+{% if request.user.photo %}
+    <img src="{{ request.user.photo.url }}" width="150">
+{% endif %}
+
+{% endblock %}

@@ -5,6 +5,7 @@ from random import randint
 from .models import EmailConfirm, User
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 
 
 def send_confirmation_email(user):
@@ -120,3 +121,9 @@ def confirm_email(request):
     
     else:
         return render(request, 'accounts/confirm_email.html')
+    
+
+
+@login_required
+def profile(request):
+    return render(request, 'accounts/profile.html')
