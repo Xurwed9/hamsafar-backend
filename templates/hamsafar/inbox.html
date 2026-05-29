@@ -2,51 +2,41 @@
 
 {% block main %}
 
-<h2>Inbox</h2>
+<div class="inbox-container">
 
-{% for msg in messages %}
+    <h2 class="page-title">Inbox</h2>
 
-<div style="
-    border:1px solid #ccc;
-    padding:15px;
-    margin-bottom:10px;
-    border-radius:10px;
-">
+    {% for msg in messages %}
 
-    <p>
-        <strong>From:</strong>
-        {{ msg.sender.username }}
-    </p>
+        <div class="message-card">
 
-    <p>
-        {{ msg.text }}
-    </p>
+            <div class="message-header">
+                <strong>From:</strong>
+                <span class="sender">{{ msg.sender.username }}</span>
+            </div>
 
-    <small>
-        {{ msg.created_at }}
-    </small>
+            <div class="message-body">
+                {{ msg.text }}
+            </div>
 
-    <br><br>
+            <div class="message-footer">
+                <small>{{ msg.created_at }}</small>
+            </div>
 
-    <a href="{% url 'send_message' msg.sender.id %}"
-       style="
-       background:#007bff;
-       color:white;
-       padding:8px 12px;
-       text-decoration:none;
-       border-radius:5px;
-       ">
+            <a href="{% url 'send_message' msg.sender.id %}" class="btn reply-btn">
+                Reply
+            </a>
 
-       Reply
+        </div>
 
-    </a>
+    {% empty %}
+
+        <div class="empty-box">
+            <p>No messages yet.</p>
+        </div>
+
+    {% endfor %}
 
 </div>
-
-{% empty %}
-
-<p>No messages yet.</p>
-
-{% endfor %}
 
 {% endblock %}
