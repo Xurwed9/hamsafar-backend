@@ -1,0 +1,28 @@
+{% extends "accounts/base.html" %}
+
+{% block main %}
+
+<h2>Edit Profile</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label>Phone:</label>
+    <input type="text" name="phone" value="{{ request.user.phone }}">
+
+    <br><br>
+
+    <label>Age:</label>
+    <input type="number" name="age" value="{{ request.user.age }}">
+
+    <br><br>
+
+    <label>Photo:</label>
+    <input type="file" name="photo">
+
+    <br><br>
+
+    <button type="submit">Save</button>
+</form>
+
+{% endblock %}

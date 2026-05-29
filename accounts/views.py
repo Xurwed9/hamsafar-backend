@@ -127,3 +127,23 @@ def confirm_email(request):
 @login_required
 def profile(request):
     return render(request, 'accounts/profile.html')
+
+
+@login_required
+def edit_profile(request):
+
+    user = request.user
+
+    if request.method == 'POST':
+
+        user.phone = request.POST.get('phone')
+        user.age = request.POST.get('age')
+
+        if request.FILES.get('photo'):
+            user.photo = request.FILES['photo']
+
+        user.save()
+
+        return redirect('profile')
+
+    return render(request, 'accounts/edit_profile.html')
