@@ -190,3 +190,105 @@ body {
 .auth-label
 .auth-button
 .auth-error
+
+
+/* ===== CONTAINER ===== */
+.trip-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* ===== STEP CARD ===== */
+.step-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    animation: fadeUp 0.4s ease;
+}
+
+/* TITLE */
+.step-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+/* FORM */
+.form-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* LABEL */
+.label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #444;
+}
+
+/* INPUT */
+.input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.3s;
+    font-size: 14px;
+}
+
+.input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 6px rgba(0,123,255,0.2);
+}
+
+/* BUTTONS */
+.btn {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.btn.primary {
+    background: #007bff;
+    color: white;
+}
+
+.btn.primary:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+}
+
+.btn.success {
+    background: #28a745;
+    color: white;
+}
+
+.btn.success:hover {
+    background: #1e7e34;
+    transform: translateY(-2px);
+}
+
+/* FULL WIDTH BUTTON */
+.full {
+    width: 100%;
+}
+
+/* ANIMATION */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
