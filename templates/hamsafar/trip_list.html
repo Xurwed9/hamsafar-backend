@@ -4,7 +4,28 @@
 
 <div class="trips-page">
 
-    <h2 class="page-title">Сафарҳои фаъол (Ҳамсафар ёбед)</h2>
+    <h2 class="page-title"> Active Trips (Find Your Travel Partner) 🚗</h2>
+             <form action="{% url 'trip_list' %}" method="GET" class="search-form">
+
+    <div class="search-box">
+        <span>📍</span>
+        <input type="text"
+               name="from_city"
+               placeholder="From city">
+    </div>
+
+    <div class="search-box">
+        <span>🚩</span>
+        <input type="text"
+               name="to_city"
+               placeholder="To city">
+    </div>
+
+    <button type="submit" class="search-btn">
+        🔍 Search
+    </button>
+
+</form>
 
     <div class="trips-grid">
 

@@ -7,13 +7,34 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+# def trip_list(request):
+#     active_trips = Trip.objects.filter(
+#         free_seats__gt=0,
+#         departure_time__gte=timezone.now()
+#     ).order_by('departure_time')
+#     return render(request, 'hamsafar/trip_list.html', {'trips': active_trips})
+
 def trip_list(request):
-    active_trips = Trip.objects.filter(
+
+    trips = Trip.objects.filter(
         free_seats__gt=0,
         departure_time__gte=timezone.now()
-    ).order_by('departure_time')
-    return render(request, 'hamsafar/trip_list.html', {'trips': active_trips})
+    )
 
+    from_city = request.GET.get('from_city')
+    to_city = request.GET.get('to_city')
+
+    if from_city:
+        trips = trips.filter(from_city__icontains=from_city)
+
+    if to_city:
+        trips = trips.filter(to_city__icontains=to_city)
+
+    trips = trips.order_by('departure_time')
+
+    return render(request, 'hamsafar/trip_list.html', {
+        'trips': trips
+    })
 
 @login_required
 def create_trip(request):

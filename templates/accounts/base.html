@@ -16,6 +16,7 @@
 
         <a href="{% url 'trip_list' %}" class="nav-link">Trips (Home)</a>
 
+
         {% if request.user.is_authenticated %}
 
             {% if request.user.is_driver %}
@@ -55,8 +56,9 @@
             <a href="{% url 'logout' %}" class="nav-link danger">
                 Logout
             </a>
-            <a href="{% url 'profile' %}">Profile</a>
-
+<a href="{% url 'profile' %}" class="profile-link">
+    Profile
+</a>
         {% else %}
 
             <a href="{% url 'login' %}" class="nav-link">Login</a>
