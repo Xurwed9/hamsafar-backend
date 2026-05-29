@@ -1,36 +1,65 @@
 {% extends "accounts/base.html" %}
 {% block main %}
 
-<h3>Edit Trip</h3>
-<form method="post">
-    {% csrf_token %}
-    
-    <label>Car:</label><br>
-    <select name="car_id" required style="width: 100%; padding: 8px;">
-        {% for car in user_cars %}
-            <option value="{{ car.id }}" {% if car.id == trip.car.id %}selected{% endif %}>
-                {{ car.car_name }} ({{ car.car_number }})
-            </option>
-        {% endfor %}
-    </select><br><br>
+<div class="trip-container">
 
-    <label>From:</label><br>
-    <input type="text" name="from_city" value="{{ trip.from_city }}" required><br><br>
+    <div class="step-card">
 
-    <label>To:</label><br>
-    <input type="text" name="to_city" value="{{ trip.to_city }}" required><br><br>
+        <h3 class="step-title">Edit Trip</h3>
 
-    <label>Departure Time:</label><br>
-    <input type="datetime-local" name="departure_time" value="{{ trip.departure_time|date:'Y-m-d\TH:i' }}" required><br><br>
+        <form method="post" class="form-box">
+            {% csrf_token %}
 
-    <label>Price:</label><br>
-    <input type="number" name="price" value="{{ trip.price }}" required><br><br>
+            <label class="label">Car</label>
+            <select name="car_id" class="input">
+                {% for car in user_cars %}
+                    <option value="{{ car.id }}"
+                        {% if car.id == trip.car.id %}selected{% endif %}>
+                        {{ car.car_name }} ({{ car.car_number }})
+                    </option>
+                {% endfor %}
+            </select>
 
-    <label>Free Seats:</label><br>
-    <input type="number" name="free_seats" value="{{ trip.free_seats }}" required><br><br>
+            <label class="label">From</label>
+            <input type="text" name="from_city"
+                   value="{{ trip.from_city }}"
+                   class="input" required>
 
-    <button type="submit">Save Changes</button>
-    <a href="{% url 'trip_list' %}">Cancel</a>
-</form>
+            <label class="label">To</label>
+            <input type="text" name="to_city"
+                   value="{{ trip.to_city }}"
+                   class="input" required>
+
+            <label class="label">Departure Time</label>
+            <input type="datetime-local"
+                   name="departure_time"
+                   value="{{ trip.departure_time|date:'Y-m-d\\TH:i' }}"
+                   class="input" required>
+
+            <label class="label">Price</label>
+            <input type="number"
+                   name="price"
+                   value="{{ trip.price }}"
+                   class="input" required>
+
+            <label class="label">Free Seats</label>
+            <input type="number"
+                   name="free_seats"
+                   value="{{ trip.free_seats }}"
+                   class="input" required>
+
+            <button type="submit" class="btn primary full">
+                Save Changes
+            </button>
+
+            <a href="{% url 'trip_list' %}" class="btn cancel full">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
 
 {% endblock %}
