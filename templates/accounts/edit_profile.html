@@ -2,27 +2,124 @@
 
 {% block main %}
 
-<h2>Edit Profile</h2>
+<style>
 
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
+    body{
+        background: #f1f5f9;
+        font-family: Arial, sans-serif;
+    }
 
-    <label>Phone:</label>
-    <input type="text" name="phone" value="{{ request.user.phone }}">
+    .edit-profile-container{
+        width: 450px;
+        margin: 50px auto;
+        background: white;
+        padding: 35px;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
 
-    <br><br>
+    .edit-profile-container h2{
+        text-align: center;
+        margin-bottom: 30px;
+        color: #222;
+        font-size: 32px;
+    }
 
-    <label>Age:</label>
-    <input type="number" name="age" value="{{ request.user.age }}">
+    .form-group{
+        margin-bottom: 20px;
+    }
 
-    <br><br>
+    .form-group label{
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #444;
+        font-size: 17px;
+    }
 
-    <label>Photo:</label>
-    <input type="file" name="photo">
+    .form-group input{
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: 0.3s;
+    }
 
-    <br><br>
+    .form-group input:focus{
+        border-color: #4CAF50;
+        outline: none;
+        box-shadow: 0 0 8px rgba(76,175,80,0.4);
+    }
 
-    <button type="submit">Save</button>
-</form>
+    .current-photo{
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .current-photo img{
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #4CAF50;
+    }
+
+    .save-btn{
+        width: 100%;
+        padding: 14px;
+        background: #4CAF50;
+        border: none;
+        color: white;
+        font-size: 18px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .save-btn:hover{
+        background: #388E3C;
+        transform: scale(1.02);
+    }
+
+</style>
+
+<div class="edit-profile-container">
+
+    <h2>Edit Profile</h2>
+
+    <div class="current-photo">
+        {% if request.user.photo %}
+            <img src="{{ request.user.photo.url }}">
+        {% else %}
+            <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+        {% endif %}
+    </div>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="text" name="phone" value="{{ request.user.phone }}">
+        </div>
+
+        <div class="form-group">
+            <label>Age</label>
+            <input type="number" name="age" value="{{ request.user.age }}">
+        </div>
+
+        <div class="form-group">
+            <label>Change Photo</label>
+            <input type="file" name="photo">
+        </div>
+
+        <button type="submit" class="save-btn">
+            Save Changes
+        </button>
+
+    </form>
+
+</div>
 
 {% endblock %}
