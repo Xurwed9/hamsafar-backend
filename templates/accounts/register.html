@@ -1,41 +1,47 @@
 {% extends "accounts/base.html" %}
+
 {% block main %}
 
-<h3>Register</h3>
-<form action="" method="post">
-    {% csrf_token %}
-    
-    <label for="username">Username</label><br>
-    <input type="text" placeholder="Enter your username" name="username" required><br><br>
-    
-    <label for="email">Email</label><br>
-    <input type="email" placeholder="Enter your email" name="email" required><br><br>
-    
-    <label for="password1">Password</label><br>
-    <input type="password" placeholder="Enter your password" name="password1" required><br><br>
-    
-    <label for="password2">Confirm password</label><br>
-    <input type="password" placeholder="Confirm password" name="password2" required><br><br>
-    
-    <label for="phone">Phone Number</label><br>
-    <input type="text" placeholder="Enter your phone" name="phone" required><br><br>
-    
-    <label for="age">Age</label><br>
-    <input type="number" placeholder="Enter your age" name="age" required><br><br>
+<div class="auth-container">
 
-    <p>
-        <label for="role">Who are you?</label><br>
-        <select name="role" id="role" required style="padding: 10px; width: 100%;">
-            <option value="passenger">🙋‍♂️ I am a Passenger</option>
-            <option value="driver">🚗 I am a Driver</option>
+    <h3 class="auth-title">Register</h3>
+
+    <form action="" method="post" class="auth-form">
+        {% csrf_token %}
+
+        <label class="auth-label">Username</label>
+        <input type="text" name="username" placeholder="Enter your username" class="auth-input" required>
+
+        <label class="auth-label">Email</label>
+        <input type="email" name="email" placeholder="Enter your email" class="auth-input" required>
+
+        <label class="auth-label">Password</label>
+        <input type="password" name="password1" placeholder="Enter your password" class="auth-input" required>
+
+        <label class="auth-label">Confirm Password</label>
+        <input type="password" name="password2" placeholder="Confirm password" class="auth-input" required>
+
+        <label class="auth-label">Phone Number</label>
+        <input type="text" name="phone" placeholder="Enter your phone" class="auth-input" required>
+
+        <label class="auth-label">Age</label>
+        <input type="number" name="age" placeholder="Enter your age" class="auth-input" required>
+
+        <label class="auth-label">Who are you?</label>
+        <select name="role" class="auth-input" required>
+            <option value="passenger">🙋‍♂️ Passenger</option>
+            <option value="driver">🚗 Driver</option>
         </select>
-    </p>
-    
-    <button type="submit">Register</button>
-    
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
-</form>
+
+        <button type="submit" class="auth-button">
+            Register
+        </button>
+
+        {% if error %}
+            <p class="auth-error">{{ error }}</p>
+        {% endif %}
+    </form>
+
+</div>
 
 {% endblock %}
