@@ -63,12 +63,14 @@
                            class="btn message-btn">
                             Message Driver
                         </a>
-                         {% if request.user == trip.driver %}
-        <a href="{% url 'update_trip' trip.id %}"
-           class="btn update-btn">
-            ✏️ Update Trip
-        </a>
-    {% endif %}
+                  {% if request.user == trip.driver %}
+    <a href="{% url 'update_trip' trip.id %}" class="btn update-btn">
+        ✏️ Update Trip
+    </a>
+    <a href="{% url 'delete_trip' trip.id %}" class="btn delete-btn">
+        🗑️ Delete Trip
+    </a>
+{% endif %}
 
                         {% if not request.user.is_driver %}
 
