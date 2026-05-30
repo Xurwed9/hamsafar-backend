@@ -73,17 +73,47 @@ def create_trip(request):
         elif 'create_trip' in request.POST:
             car_id = request.POST.get('car_id')
             car = get_object_or_404(Car, id=car_id, owner=request.user)
-            
+
+            from_city = request.POST.get('from_city')
+            to_city = request.POST.get('to_city')
+            departure_time = request.POST.get('departure_time')
+
+        
+            price = request.POST.get('price')
+            try:
+                price = float(price)
+                if price <= 0:
+                    return render(request, 'hamsafar/error.html',{
+                        'error': 'Нарх бояд аз 0 калон бошад'
+                    }, status=400)
+            except ValueError:
+                return render(request, 'hamsafar/error.html',{
+                    'error': 'Нарх бояд рақам бошад'
+                }, status=400)
+    
+            free_seats = request.POST.get('free_seats')
+            try:
+                free_seats = int(free_seats)
+                if free_seats < 1:
+                    return render(request, 'hamsafar/error.html',{
+                        'error': 'Шумораи ҷойҳо бояд аз 1 калон бошад'
+                    }, status=400)
+            except ValueError:
+                return render(request, 'hamsafar/error.html',{
+                    'error': 'Шумораи ҷойҳо бояд рақам бошад'
+                }, status=400)
+    
             Trip.objects.create(
                 driver=request.user,
-                car=car,
-                from_city=request.POST.get('from_city'),
-                to_city=request.POST.get('to_city'),
-                departure_time=request.POST.get('departure_time'),
-                price=request.POST.get('price'),
-                free_seats=request.POST.get('free_seats')
-            )
-            return redirect('trip_list')
+            car=car,
+            from_city=from_city,
+            to_city=to_city,
+            departure_time=departure_time,
+            price=price,
+            free_seats=free_seats
+        )
+
+        return redirect('trip_list')
 
     return render(request, 'hamsafar/create_trip.html', {'user_cars': user_cars})
 
