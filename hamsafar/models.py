@@ -19,7 +19,6 @@ class Car(models.Model):
         return f"{self.car_name} ({self.car_number})"
     
 
-
 class Trip(models.Model):
     driver = models.ForeignKey(
         User,

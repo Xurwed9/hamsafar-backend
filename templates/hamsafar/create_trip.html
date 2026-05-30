@@ -3,70 +3,68 @@
 
 <div class="trip-container">
 
-    {% if not user_cars %}
+```
+<div class="step-card">
+    <h3 class="step-title">Add Car</h3>
 
-        <div class="step-card">
-            <h3 class="step-title">Step 1: Add your car</h3>
+    <form method="post" class="form-box">
+        {% csrf_token %}
+        <input type="hidden" name="add_car" value="1">
 
-            <form method="post" class="form-box">
-                {% csrf_token %}
-                <input type="hidden" name="add_car" value="1">
+        <label class="label">Car Name</label>
+        <input type="text" name="car_name" class="input" placeholder="Toyota Camry" required>
 
-                <label class="label">Car Name</label>
-                <input type="text" name="car_name" class="input" placeholder="Toyota Camry" required>
+        <label class="label">Car Number</label>
+        <input type="text" name="car_number" class="input" placeholder="0001AA01" required>
 
-                <label class="label">Car Number</label>
-                <input type="text" name="car_number" class="input" placeholder="0001TJ01" required>
+        <label class="label">Total Seats</label>
+        <input type="number" name="seats" class="input" required>
 
-                <label class="label">Total Seats</label>
-                <input type="number" name="seats" class="input" required>
+        <button type="submit" class="btn primary full">
+            Save Car
+        </button>
+    </form>
+</div>
 
-                <button type="submit" class="btn primary full">
-                    Save Car & Continue
-                </button>
-            </form>
-        </div>
+{% if user_cars %}
+<div class="step-card">
+    <h3 class="step-title">Create Trip</h3>
 
-    {% else %}
+    <form method="post" class="form-box">
+        {% csrf_token %}
+        <input type="hidden" name="create_trip" value="1">
 
-        <div class="step-card">
-            <h3 class="step-title">Step 2: Create a Trip</h3>
+        <label class="label">Select Car</label>
+        <select name="car_id" class="input" required>
+            {% for car in user_cars %}
+                <option value="{{ car.id }}">
+                    {{ car.car_name }} ({{ car.car_number }})
+                </option>
+            {% endfor %}
+        </select>
 
-            <form method="post" class="form-box">
-                {% csrf_token %}
-                <input type="hidden" name="create_trip" value="1">
+        <label class="label">From</label>
+        <input type="text" name="from_city" class="input" required>
 
-                <label class="label">Select Car</label>
-                <select name="car_id" class="input">
-                    {% for car in user_cars %}
-                        <option value="{{ car.id }}">
-                            {{ car.car_name }} ({{ car.car_number }})
-                        </option>
-                    {% endfor %}
-                </select>
+        <label class="label">To</label>
+        <input type="text" name="to_city" class="input" required>
 
-                <label class="label">From</label>
-                <input type="text" name="from_city" class="input" placeholder="Dushanbe" required>
+        <label class="label">Departure Time</label>
+        <input type="datetime-local" name="departure_time" class="input" required>
 
-                <label class="label">To</label>
-                <input type="text" name="to_city" class="input" placeholder="Yovon" required>
+        <label class="label">Price</label>
+        <input type="number" name="price" class="input" required>
 
-                <label class="label">Departure Time</label>
-                <input type="datetime-local" name="departure_time" class="input" required>
+        <label class="label">Free Seats</label>
+        <input type="number" name="free_seats" class="input" required>
 
-                <label class="label">Price</label>
-                <input type="number" name="price" class="input" required>
-
-                <label class="label">Free Seats</label>
-                <input type="number" name="free_seats" class="input" required>
-
-                <button type="submit" class="btn success full">
-                    Create Trip
-                </button>
-            </form>
-        </div>
-
-    {% endif %}
+        <button type="submit" class="btn success full">
+            Create Trip
+        </button>
+    </form>
+</div>
+{% endif %}
+```
 
 </div>
 

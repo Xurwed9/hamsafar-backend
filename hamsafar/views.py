@@ -4,23 +4,17 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages 
 from django.contrib.auth import get_user_model
+import re
+from django.http import JsonResponse
 
 User = get_user_model()
 
-# def trip_list(request):
-#     active_trips = Trip.objects.filter(
-#         free_seats__gt=0,
-#         departure_time__gte=timezone.now()
-#     ).order_by('departure_time')
-#     return render(request, 'hamsafar/trip_list.html', {'trips': active_trips})
 
 def trip_list(request):
-
     trips = Trip.objects.filter(
         free_seats__gt=0,
-        departure_time__gte=timezone.now()
+        
     )
-
     from_city = request.GET.get('from_city')
     to_city = request.GET.get('to_city')
 
@@ -38,7 +32,7 @@ def trip_list(request):
 
 @login_required
 def create_trip(request):
-    if not getattr(request.user, 'is_driver', False):
+    if not request.user.is_driver:
         return render(request, 'hamsafar/error.html', {'error': 'Танҳо ронандагон метавонанд сафар созанд.'})
 
     user_cars = Car.objects.filter(owner=request.user)
@@ -46,14 +40,22 @@ def create_trip(request):
     if request.method == "POST":
         if 'add_car' in request.POST:
             car_name = request.POST.get('car_name')
-            car_number = request.POST.get('car_number')
+            car_number = request.POST.get('car_number', '').upper().strip()
             seats = request.POST.get('seats')
+            pattern = r'^\d{4}[A-Z]{2}\d{2}$'
+
+            if not re.fullmatch(pattern, car_number):
+                return render(request, 'hamsafar/error.html',{
+                'error': 'Фақат рақами давлатии Тоҷикистон иҷозат аст'
+                }, status=400)
+
             Car.objects.create(
                 owner=request.user,
                 car_name=car_name,
                 car_number=car_number,
                 seats=seats
             )
+
             return redirect('create_trip')
 
         elif 'create_trip' in request.POST:
@@ -168,8 +170,6 @@ def manage_booking(request, booking_id, action):
         booking.save()
         
     return redirect('my_trips')
-
-
 
 
 @login_required
