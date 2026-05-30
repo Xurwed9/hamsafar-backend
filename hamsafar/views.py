@@ -42,6 +42,18 @@ def create_trip(request):
             car_name = request.POST.get('car_name')
             car_number = request.POST.get('car_number', '').upper().strip()
             seats = request.POST.get('seats')
+            try:
+                seats = int(seats)
+
+                if seats < 1 or seats > 8:
+                    return render(request, 'hamsafar/error.html',{
+                    'error': 'Шумораи ҷойҳо бояд аз 1 то 8 бошад'
+                    }, status=400)
+
+            except ValueError:
+                return render(request, 'hamsafar/error.html',{
+        'error': 'Шумораи ҷойҳо бояд рақам бошад'
+    }, status=400)
             pattern = r'^\d{4}[A-Z]{2}\d{2}$'
 
             if not re.fullmatch(pattern, car_number):
