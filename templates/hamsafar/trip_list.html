@@ -57,12 +57,12 @@
 
                 {% if request.user.is_authenticated %}
 
-                    <div class="trip-actions">
-
-                        <a href="{% url 'send_message' trip.driver.id %}"
-                           class="btn message-btn">
-                            Message Driver
-                        </a>
+                    {% if not request.user.is_driver %}
+    <a href="{% url 'send_message' trip.driver.id %}"
+       class="btn message-btn">
+        Message Driver
+    </a>
+{% endif %}
                   {% if request.user == trip.driver %}
     <a href="{% url 'update_trip' trip.id %}" class="btn update-btn">
         ✏️ Update Trip

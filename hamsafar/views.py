@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages 
 from django.contrib.auth import get_user_model
 import re
-from django.http import JsonResponse
 
 User = get_user_model()
 
@@ -267,7 +266,6 @@ def send_message(request, user_id):
     return render(request, 'hamsafar/send_message.html', {
         'receiver': receiver
     })
-
 
 
 @login_required
