@@ -152,28 +152,63 @@ def my_trips(request):
     return render(request, 'hamsafar/my_trips.html', {'trips': trips})
 
 
+# @login_required
+# def book_trip(request, trip_id):
+#     if getattr(request.user, 'is_driver', False):
+#         return render(request, 'hamsafar/error.html', {'error': 'Ронандагон наметавонанд сафарро банд кунанд.'})
+        
+#     trip = get_object_or_404(Trip, id=trip_id)
+    
+#     already_booked = Booking.objects.filter(passenger=request.user, trip=trip).exists()
+    
+#     if already_booked:
+#         return render(request, 'hamsafar/error.html', {'error': 'Шумо ин сафарро аллакай банд кардаед.'})
+
+#     if trip.free_seats <= 0:
+#         return render(request, 'hamsafar/error.html', {'error': 'Дар ин сафар ҷои холӣ намондааст.'})
+        
+#     Booking.objects.create(
+#         passenger=request.user,
+#         trip=trip,
+#         seats=1,
+#         status='Pending'
+#     )
+#     return redirect('passenger_bookings')
 @login_required
 def book_trip(request, trip_id):
     if getattr(request.user, 'is_driver', False):
-        return render(request, 'hamsafar/error.html', {'error': 'Ронандагон наметавонанд сафарро банд кунанд.'})
-        
-    trip = get_object_or_404(Trip, id=trip_id)
-    
-    already_booked = Booking.objects.filter(passenger=request.user, trip=trip).exists()
-    
-    if already_booked:
-        return render(request, 'hamsafar/error.html', {'error': 'Шумо ин сафарро аллакай банд кардаед.'})
+        return render(request, 'hamsafar/error.html', {
+            'error': 'Ронандагон наметавонанд сафарро банд кунанд.'
+        })
 
-    if trip.free_seats <= 0:
-        return render(request, 'hamsafar/error.html', {'error': 'Дар ин сафар ҷои холӣ намондааст.'})
-        
-    Booking.objects.create(
-        passenger=request.user,
-        trip=trip,
-        seats=1,
-        status='Pending'
-    )
-    return redirect('passenger_bookings')
+    trip = get_object_or_404(Trip, id=trip_id)
+
+    if Booking.objects.filter(passenger=request.user, trip=trip).exists():
+        return render(request, 'hamsafar/error.html', {
+            'error': 'Шумо ин сафарро аллакай банд кардаед.'
+        })
+
+    if request.method == "POST":
+        seats = int(request.POST.get('seats', 1))
+
+        if seats > trip.free_seats:
+            return render(request, 'hamsafar/book_trip.html', {
+                'trip': trip,
+                'error': 'Ин қадар ҷой дастрас нест.'
+            })
+
+        Booking.objects.create(
+            passenger=request.user,
+            trip=trip,
+            seats=seats,
+            status='Pending'
+        )
+
+        return redirect('passenger_bookings')
+
+    return render(request, 'hamsafar/book_trip.html', {
+        'trip': trip
+    })
 
 
 @login_required
