@@ -11,6 +11,20 @@ from django.views import generic
 
 User = get_user_model()
 
+class TripListView(LoginRequiredMixin,generic.ListView):
+    model=Trip
+    def get_queryset(self):
+        queryset = Trip.objects.select_related('driver', 'car').filter(free_seats__gt=0)
+        from_city = self.request.GET.get('from_city')
+        to_city = self.request.GET.get('to_city')
+        if from_city:
+            queryset = queryset.filter(from_city__icontains=from_city)
+        if to_city:
+            queryset = queryset.filter(to_city__icontains=to_city)
+        return queryset.order_by('departure_time')
+
+
+
 # def trip_list(request):
 #     trips = Trip.objects.filter(
 #         free_seats__gt=0,
