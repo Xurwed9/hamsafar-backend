@@ -7,7 +7,7 @@
 
         <h3 class="step-title">Edit Trip</h3>
 
-        <form method="post" class="form-box">
+        <form method="post" class="form-box" enctype="multipart/form-data">
             {% csrf_token %}
 
             <label class="label">Car</label>
@@ -19,6 +19,16 @@
                     </option>
                 {% endfor %}
             </select>
+
+            <label class="label">Photo</label>
+
+{% if trip.car.photo %}
+    <img src="{{ trip.car.photo.url }}"
+         width="200"
+         alt="Car Photo">
+{% endif %}
+
+<input type="file" name="photo" class="input">
 
             <label class="label">From</label>
             <input type="text" name="from_city"

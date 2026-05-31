@@ -30,6 +30,13 @@
         {% for trip in trips %}
 
             <div class="trip-card">
+     {% if trip.car.photo %}
+    <img src="{{ trip.car.photo.url }}"
+         alt="Car Photo"
+         style="max-width:200px; display:block; margin-bottom:10px;">
+{% else %}
+    <p>No photo uploaded yet.</p>
+{% endif %}
 
                 <h3 class="trip-route">
                     {{ trip.from_city }} ➜ {{ trip.to_city }}

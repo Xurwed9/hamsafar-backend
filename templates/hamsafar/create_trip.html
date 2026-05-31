@@ -7,7 +7,7 @@
 <div class="step-card">
     <h3 class="step-title">Add Car</h3>
 
-    <form method="post" class="form-box">
+    <form method="post" class="form-box" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" name="add_car" value="1">
 
@@ -19,6 +19,9 @@
 
         <label class="label">Total Seats</label>
         <input type="number" name="seats" class="input" required>
+
+        <label class="label">Photo</label>
+        <input type="file" name="photo" class="input" required>
 
         <button type="submit" class="btn primary full">
             Save Car

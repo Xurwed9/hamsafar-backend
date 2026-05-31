@@ -41,6 +41,7 @@ def create_trip(request):
             car_name = request.POST.get('car_name')
             car_number = request.POST.get('car_number', '').upper().strip()
             seats = request.POST.get('seats')
+            photo = request.FILES.get('photo')
             try:
                 seats = int(seats)
 
@@ -64,7 +65,8 @@ def create_trip(request):
                 owner=request.user,
                 car_name=car_name,
                 car_number=car_number,
-                seats=seats
+                seats=seats,
+                photo=photo
             )
 
             return redirect('create_trip')
@@ -130,7 +132,10 @@ def update_trip(request, pk):
         trip.departure_time = request.POST.get('departure_time')
         trip.price = request.POST.get('price')
         trip.free_seats = request.POST.get('free_seats')
+        if request.FILES.get("photo"):
+            trip.car.photo = request.FILES["photo"]
         trip.save()
+        trip.car.save()
         return redirect('trip_list')
 
     return render(request, 'hamsafar/update_trip.html', {'trip': trip, 'user_cars': user_cars})
