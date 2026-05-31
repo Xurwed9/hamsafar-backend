@@ -14,6 +14,7 @@ class Car(models.Model):
     car_name = models.CharField(max_length=100)
     car_number = models.CharField(max_length=20)
     seats = models.IntegerField()
+    photo = models.ImageField(upload_to='cars/', null=True, blank=True)
 
     def __str__(self):
         return f"{self.car_name} ({self.car_number})"
