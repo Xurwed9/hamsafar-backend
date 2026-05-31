@@ -5,29 +5,31 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages 
 from django.contrib.auth import get_user_model
 import re
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy
+from django.views import generic
 
 User = get_user_model()
 
-
-def trip_list(request):
-    trips = Trip.objects.filter(
-        free_seats__gt=0,
+# def trip_list(request):
+#     trips = Trip.objects.filter(
+#         free_seats__gt=0,
         
-    )
-    from_city = request.GET.get('from_city')
-    to_city = request.GET.get('to_city')
+#     )
+#     from_city = request.GET.get('from_city')
+#     to_city = request.GET.get('to_city')
 
-    if from_city:
-        trips = trips.filter(from_city__icontains=from_city)
+#     if from_city:
+#         trips = trips.filter(from_city__icontains=from_city)
 
-    if to_city:
-        trips = trips.filter(to_city__icontains=to_city)
+#     if to_city:
+#         trips = trips.filter(to_city__icontains=to_city)
 
-    trips = trips.order_by('departure_time')
+#     trips = trips.order_by('departure_time')
 
-    return render(request, 'hamsafar/trip_list.html', {
-        'trips': trips
-    })
+#     return render(request, 'hamsafar/trip_list.html', {
+#         'trips': trips
+#     })
 
 @login_required
 def create_trip(request):
@@ -156,28 +158,6 @@ def my_trips(request):
     return render(request, 'hamsafar/my_trips.html', {'trips': trips})
 
 
-# @login_required
-# def book_trip(request, trip_id):
-#     if getattr(request.user, 'is_driver', False):
-#         return render(request, 'hamsafar/error.html', {'error': 'Ронандагон наметавонанд сафарро банд кунанд.'})
-        
-#     trip = get_object_or_404(Trip, id=trip_id)
-    
-#     already_booked = Booking.objects.filter(passenger=request.user, trip=trip).exists()
-    
-#     if already_booked:
-#         return render(request, 'hamsafar/error.html', {'error': 'Шумо ин сафарро аллакай банд кардаед.'})
-
-#     if trip.free_seats <= 0:
-#         return render(request, 'hamsafar/error.html', {'error': 'Дар ин сафар ҷои холӣ намондааст.'})
-        
-#     Booking.objects.create(
-#         passenger=request.user,
-#         trip=trip,
-#         seats=1,
-#         status='Pending'
-#     )
-#     return redirect('passenger_bookings')
 @login_required
 def book_trip(request, trip_id):
     if getattr(request.user, 'is_driver', False):
