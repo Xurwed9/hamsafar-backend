@@ -24,8 +24,6 @@ class TripListView(LoginRequiredMixin,generic.ListView):
             queryset = queryset.filter(to_city__icontains=to_city)
         return queryset.order_by('departure_time')
 
-
-
 # def trip_list(request):
 #     trips = Trip.objects.filter(
 #         free_seats__gt=0,
@@ -168,6 +166,7 @@ class TripUpdateView(LoginRequiredMixin, generic.UpdateView):
     'price',
     'free_seats',
 ]
+    slug_field = 'slug'
     template_name = 'hamsafar/update_trip.html'
     success_url = reverse_lazy('trip_list')
     def get_queryset(self):

@@ -253,7 +253,7 @@ body.compact .btn{
                 {% endif %}
 
                 {% if request.user == trip.driver %}
-                    <a href="{% url 'update_trip' trip.id %}" class="btn update-btn">
+                    <a href="{% url 'update_trip' trip.slug %}" class="btn update-btn">
                         ✏️ Update Trip
                     </a>
 
