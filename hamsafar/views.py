@@ -196,6 +196,7 @@ class TripUpdateView(LoginRequiredMixin, generic.UpdateView):
 class TripDeleteView(LoginRequiredMixin, generic.DeleteView):
     model=Trip
     template_name='hamsafar/delete_trip.html'
+    slug_field = 'slug'
     success_url=reverse_lazy('trip_list')
     def get_queryset(self):
         return Trip.objects.filter(driver=self.request.user)

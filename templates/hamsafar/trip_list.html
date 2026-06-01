@@ -257,7 +257,7 @@ body.compact .btn{
                         ✏️ Update Trip
                     </a>
 
-                    <a href="{% url 'delete_trip' trip.id %}" class="btn delete-btn">
+                    <a href="{% url 'delete_trip' trip.slug %}" class="btn delete-btn">
                         🗑️ Delete Trip
                     </a>
                 {% endif %}
