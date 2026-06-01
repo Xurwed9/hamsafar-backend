@@ -11,7 +11,7 @@
             {% csrf_token %}
 
             <label class="label">Car</label>
-            <select name="car_id" class="input">
+            <select name="car" class="input">
                 {% for car in user_cars %}
                     <option value="{{ car.id }}"
                         {% if car.id == trip.car.id %}selected{% endif %}>

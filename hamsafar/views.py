@@ -8,6 +8,7 @@ import re
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views import generic
+from .forms import TripForm
 
 User = get_user_model()
 
@@ -44,6 +45,8 @@ class TripListView(LoginRequiredMixin,generic.ListView):
 #     return render(request, 'hamsafar/trip_list.html', {
 #         'trips': trips
 #     })
+
+
 
 @login_required
 def create_trip(request):
@@ -135,26 +138,53 @@ def create_trip(request):
     return render(request, 'hamsafar/create_trip.html', {'user_cars': user_cars})
 
 
-@login_required
-def update_trip(request, pk):
-    trip = get_object_or_404(Trip, pk=pk, driver=request.user)
-    user_cars = Car.objects.filter(owner=request.user)
+# @login_required
+# def update_trip(request, pk):
+#     trip = get_object_or_404(Trip, pk=pk, driver=request.user)
+#     user_cars = Car.objects.filter(owner=request.user)
 
-    if request.method == "POST":
-        car_id = request.POST.get('car_id')
-        trip.car = get_object_or_404(Car, id=car_id, owner=request.user)
-        trip.from_city = request.POST.get('from_city')
-        trip.to_city = request.POST.get('to_city')
-        trip.departure_time = request.POST.get('departure_time')
-        trip.price = request.POST.get('price')
-        trip.free_seats = request.POST.get('free_seats')
-        if request.FILES.get("photo"):
-            trip.car.photo = request.FILES["photo"]
-        trip.save()
-        trip.car.save()
-        return redirect('trip_list')
+#     if request.method == "POST":
+#         car_id = request.POST.get('car_id')
+#         trip.car = get_object_or_404(Car, id=car_id, owner=request.user)
+#         trip.from_city = request.POST.get('from_city')
+#         trip.to_city = request.POST.get('to_city')
+#         trip.departure_time = request.POST.get('departure_time')
+#         trip.price = request.POST.get('price')
+#         trip.free_seats = request.POST.get('free_seats')
+#         if request.FILES.get("photo"):
+#             trip.car.photo = request.FILES["photo"]
+#         trip.save()
+#         trip.car.save()
+#         return redirect('trip_list')
 
-    return render(request, 'hamsafar/update_trip.html', {'trip': trip, 'user_cars': user_cars})
+#     return render(request, 'hamsafar/update_trip.html', {'trip': trip, 'user_cars': user_cars})
+class TripUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Trip
+    fields = [
+    'car',
+    'from_city',
+    'to_city',
+    'departure_time',
+    'price',
+    'free_seats',
+]
+    template_name = 'hamsafar/update_trip.html'
+    success_url = reverse_lazy('trip_list')
+    def get_queryset(self):
+        return Trip.objects.filter(driver=self.request.user)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['trip'] = self.object
+        context['user_cars'] = Car.objects.filter(owner=self.request.user)
+        return context
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        if self.request.FILES.get("photo"):
+            self.object.car.photo = self.request.FILES["photo"]
+            self.object.car.save()
+
+        return response
 
 
 @login_required

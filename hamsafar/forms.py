@@ -1,23 +1,14 @@
 from django import forms
-from .models import User, Car
+from .models import Trip
 
-
-class CarForm(forms.Form):
-
-    car_name = forms.CharField(
-        max_length=100,
-        label='Номи мошин'
-    )
-
-    car_number = forms.CharField(
-        max_length=20,
-        label='Рақами мошин'
-    )
-
-    seats = forms.IntegerField(
-        min_value=1,
-        max_value=8,
-        label='Шумораи ҷойҳо'
-    )
-
-
+class TripForm(forms.ModelForm):
+    class Meta:
+        model = Trip
+        fields = [
+            'car',
+            'from_city',
+            'to_city',
+            'departure_time',
+            'price',
+            'free_seats',
+        ]
