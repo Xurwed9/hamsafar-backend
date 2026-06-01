@@ -43,6 +43,11 @@ class Trip(models.Model):
         auto_now_add=True
     )
     slug = models.SlugField(unique=True, null=True,blank=True)
+    is_delete = models.BooleanField(default=False)
+
+    def delete(self, *args, **kwargs):
+        self.is_delete=True
+        self.save()
 
     def save(self, *args, **kwargs):
         if not self.slug:

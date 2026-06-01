@@ -9,15 +9,18 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views import generic
 from .forms import TripForm
+from django.db.models import Q
 
 User = get_user_model()
 
 class TripListView(LoginRequiredMixin,generic.ListView):
     model=Trip
     def get_queryset(self):
-        queryset = Trip.objects.select_related('driver', 'car').filter(free_seats__gt=0)
+        queryset = Trip.objects.select_related('driver', 'car').filter(is_delete=False)
+        queryset = queryset.filter(free_seats__gt=0)
         from_city = self.request.GET.get('from_city')
         to_city = self.request.GET.get('to_city')
+
         if from_city:
             queryset = queryset.filter(from_city__icontains=from_city)
         if to_city:
