@@ -187,13 +187,23 @@ class TripUpdateView(LoginRequiredMixin, generic.UpdateView):
         return response
 
 
-@login_required
-def delete_trip(request, pk):
-    trip = get_object_or_404(Trip, pk=pk, driver=request.user)
-    if request.method == "POST":
-        trip.delete()
-        return redirect('trip_list')
-    return render(request, 'hamsafar/delete_trip.html', {'trip': trip})
+# @login_required
+# def delete_trip(request, pk):
+#     trip = get_object_or_404(Trip, pk=pk, driver=request.user)
+#     if request.method == "POST":
+#         trip.delete()
+#         return redirect('trip_list')
+#     return render(request, 'hamsafar/delete_trip.html', {'trip': trip})
+class TripDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model=Trip
+    template_name='hamsafar/delete_trip.html'
+    success_url=reverse_lazy('trip_list')
+    def get_queryset(self):
+        return Trip.objects.filter(driver=self.request.user)
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['trip'] = self.object
+    #     return context
 
 
 @login_required
