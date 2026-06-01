@@ -2,124 +2,294 @@
 
 {% block main %}
 
-    <h2 class="page-title"> Active Trips (Find Your Travel Partner) 🚗</h2>
-             <form action="{% url 'trip_list' %}" method="GET" class="search-form">
+<body class="{% if request.GET.from_city or request.GET.to_city %}compact{% endif %}">
+
+<style>
+
+/* PAGE */
+body{
+    background:#f4f7fb;
+    font-family:Arial, sans-serif;
+}
+
+/* TITLE */
+.page-title{
+    text-align:center;
+    margin:30px 0;
+    color:#1e293b;
+    font-size:32px;
+    font-weight:700;
+}
+
+/* SEARCH */
+.search-form{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-bottom:35px;
+}
+
+.search-box{
+    background:#fff;
+    padding:12px 16px;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.search-box input{
+    border:none;
+    outline:none;
+    font-size:15px;
+}
+
+.search-btn{
+    border:none;
+    background:#2563eb;
+    color:white;
+    padding:12px 22px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.search-btn:hover{
+    background:#1d4ed8;
+}
+
+.trips-grid{
+    width:100%;
+    max-width:1200px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,300px));
+    justify-content:center;
+    gap:20px;
+}
+/* 👉 COMPACT MODE */
+body.compact .trips-grid{
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:15px;
+}
+
+/* CARD */
+.trip-card{
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,.1);
+    transition:.3s;
+}
+
+.trip-card:hover{
+    transform:translateY(-6px);
+}
+
+/* IMAGE */
+.trip-card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+body.compact .trip-card img{
+    height:150px;
+}
+
+/* TITLE */
+.trip-route{
+    text-align:center;
+    padding:15px;
+    color:#0f172a;
+    font-size:20px;
+}
+
+body.compact .trip-route{
+    font-size:16px;
+    padding:10px;
+}
+
+/* INFO */
+.trip-info{
+    padding:0 20px;
+}
+
+body.compact .trip-info{
+    padding:0 15px;
+}
+
+.trip-info p{
+    margin:10px 0;
+    color:#475569;
+    font-size:14px;
+}
+
+body.compact .trip-info p{
+    margin:6px 0;
+    font-size:12px;
+}
+
+/* BUTTONS */
+.btn{
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    margin:10px 20px;
+    padding:12px;
+    border-radius:10px;
+    font-weight:bold;
+    color:white;
+}
+
+body.compact .btn{
+    margin:8px 15px;
+    padding:10px;
+    font-size:13px;
+}
+
+/* COLORS */
+.message-btn{ background:#3b82f6; }
+.book-btn{ background:#16a34a; }
+.update-btn{ background:#f59e0b; }
+.delete-btn{ background:#dc2626; }
+
+.message-btn:hover,
+.book-btn:hover,
+.update-btn:hover,
+.delete-btn:hover{
+    opacity:.9;
+}
+
+/* NO SEATS */
+.no-seats{
+    display:block;
+    text-align:center;
+    color:red;
+    font-weight:bold;
+    margin:15px;
+}
+
+/* LOGIN */
+.login-link{
+    display:block;
+    text-align:center;
+    color:#2563eb;
+    padding:15px;
+    text-decoration:none;
+}
+
+/* EMPTY */
+.empty-state{
+    grid-column:1/-1;
+    text-align:center;
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+</style>
+
+<h2 class="page-title">Active Trips (Find Your Travel Partner) 🚗</h2>
+
+<form action="{% url 'trip_list' %}" method="GET" class="search-form">
 
     <div class="search-box">
         <span>📍</span>
-        <input type="text"
-               name="from_city"
-               placeholder="From city">
+        <input type="text" name="from_city" placeholder="From city">
     </div>
 
     <div class="search-box">
         <span>🚩</span>
-        <input type="text"
-               name="to_city"
-               placeholder="To city">
+        <input type="text" name="to_city" placeholder="To city">
     </div>
 
-    <button type="submit" class="search-btn">
-        🔍 Search
-    </button>
+    <button type="submit" class="search-btn">🔍 Search</button>
 
 </form>
 
-    <div class="trips-grid">
+<div class="trips-grid">
 
-        {% for trip in object_list %}
+    {% for trip in object_list %}
 
-            <div class="trip-card">
-     {% if trip.car.photo %}
-    <img src="{{ trip.car.photo.url }}"
-         alt="Car Photo"
-         style="max-width:200px; display:block; margin-bottom:10px;">
-{% else %}
-    <p>No photo uploaded yet.</p>
-{% endif %}
+        <div class="trip-card">
 
-                <h3 class="trip-route">
-                    {{ trip.from_city }} ➜ {{ trip.to_city }}
-                </h3>
+            {% if trip.car.photo %}
+                <img src="{{ trip.car.photo.url }}" alt="Car Photo">
+            {% else %}
+                <p>No photo uploaded yet.</p>
+            {% endif %}
 
-                <div class="trip-info">
-                    <p><strong>Driver:</strong> {{ trip.driver.username }}</p>
+            <h3 class="trip-route">
+                {{ trip.from_city }} ➜ {{ trip.to_city }}
+            </h3>
 
-                    <p><strong>Car:</strong>
-                        {{ trip.car.car_name }} ({{ trip.car.car_number }})
-                    </p>
+            <div class="trip-info">
+                <p><strong>Driver:</strong> {{ trip.driver.username }}</p>
 
-                    <p><strong>Time:</strong>
-                        {{ trip.departure_time|date:"d.m.Y H:i" }}
-                    </p>
+                <p><strong>Car:</strong>
+                    {{ trip.car.car_name }} ({{ trip.car.car_number }})
+                </p>
 
-                    <p><strong>Seats:</strong>
-                        {{ trip.free_seats }} available
-                    </p>
+                <p><strong>Time:</strong>
+                    {{ trip.departure_time|date:"d.m.Y H:i" }}
+                </p>
 
-                    <p><strong>Price:</strong>
-                        {{ trip.price }} somoni
-                    </p>
-                </div>
+                <p><strong>Seats:</strong>
+                    {{ trip.free_seats }} available
+                </p>
 
-                {% if request.user.is_authenticated %}
+                <p><strong>Price:</strong>
+                    {{ trip.price }} somoni
+                </p>
+            </div>
 
-                    {% if not request.user.is_driver %}
-    <a href="{% url 'send_message' trip.driver.id %}"
-       class="btn message-btn">
-        Message Driver
-    </a>
-{% endif %}
-                  {% if request.user == trip.driver %}
-    <a href="{% url 'update_trip' trip.id %}" class="btn update-btn">
-        ✏️ Update Trip
-    </a>
-    <a href="{% url 'delete_trip' trip.id %}" class="btn delete-btn">
-        🗑️ Delete Trip
-    </a>
-{% endif %}
+            {% if request.user.is_authenticated %}
 
-                        {% if not request.user.is_driver %}
-
-                            {% if trip.free_seats > 0 %}
-
-                                <a href="{% url 'book_trip' trip.id %}"
-                                   class="btn book-btn">
-                                    Book Now
-                                </a>
-
-                            {% else %}
-
-                                <span class="no-seats">
-                                    No seats available
-                                </span>
-
-                            {% endif %}
-
-                        {% endif %}
-
-                    </div>
-
-                {% else %}
-
-                    <a href="{% url 'login' %}" class="login-link">
-                        Login to book this trip
+                {% if not request.user.is_driver %}
+                    <a href="{% url 'send_message' trip.driver.id %}" class="btn message-btn">
+                        Message Driver
                     </a>
-
                 {% endif %}
 
-            </div>
+                {% if request.user == trip.driver %}
+                    <a href="{% url 'update_trip' trip.id %}" class="btn update-btn">
+                        ✏️ Update Trip
+                    </a>
 
-        {% empty %}
+                    <a href="{% url 'delete_trip' trip.id %}" class="btn delete-btn">
+                        🗑️ Delete Trip
+                    </a>
+                {% endif %}
 
-            <div class="empty-state">
-                <p>No trips found. Create your first trip!</p>
-            </div>
+                {% if not request.user.is_driver %}
+                    {% if trip.free_seats > 0 %}
+                        <a href="{% url 'book_trip' trip.id %}" class="btn book-btn">
+                            Book Now
+                        </a>
+                    {% else %}
+                        <span class="no-seats">No seats available</span>
+                    {% endif %}
+                {% endif %}
 
-        {% endfor %}
+            {% else %}
 
-    </div>
+                <a href="{% url 'login' %}" class="login-link">
+                    Login to book this trip
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    {% empty %}
+        <div class="empty-state">
+            <p>No trips found. Create your first trip!</p>
+        </div>
+    {% endfor %}
 
 </div>
+
+</body>
 
 {% endblock %}
